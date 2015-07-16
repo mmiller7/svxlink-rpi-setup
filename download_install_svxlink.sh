@@ -10,13 +10,16 @@ if [ "$(whoami)" != "root" ]; then
 	exit 1
 fi
 
+#get path to script for sed later
+scriptPath="`pwd`/`basename $0`"
+
 case $currentStep in
   updateRaspbian)
     echo 'Phase 1 of 3: Updating Raspbian'
     sleep 1
     apt-get update &&
     apt-get -y upgrade &&
-    sed -i 's/currentStep=updateRaspbian/currentStep=updatePi/' $0
+    sed -i 's/currentStep=updateRaspbian/currentStep=updatePi/' $scriptPath
     reboot
     ;;
 
@@ -25,7 +28,7 @@ case $currentStep in
     sleep 1
     apt-get -y install git-core ca-certificates rpi-update &&
     echo y | rpi-update &&
-    sed -i 's/currentStep=updatePi/currentStep=buildAndInstall/' $0
+    sed -i 's/currentStep=updatePi/currentStep=buildAndInstall/' $scriptPath
     reboot
     ;;
 
@@ -53,7 +56,7 @@ case $currentStep in
     make install &&
     ldconfig &&
     echo 'Done!' &&
-    sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $0
+    sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $scriptPath
     ;;
 
   alreadyDone)
