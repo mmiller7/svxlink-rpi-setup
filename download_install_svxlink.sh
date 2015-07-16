@@ -1,11 +1,12 @@
 #!/bin/bash
 
 #this is the step that will be performed on next execution
+#for clean start, this should be updateRasbian
 currentStep=updateRaspbian
 
 case currentStep in
   updateRaspbian)
-    echo 'Updating Raspbian'
+    echo 'Phase 1 of 3: Updating Raspbian'
     sleep 1
     apt-get update &&
     apt-get -y upgrade &&
@@ -14,7 +15,7 @@ case currentStep in
     ;&
 
   updatePi)
-    echo 'Updating Raspberry Pi'
+    echo 'Phase 2 of 3: Updating Raspberry Pi'
     sleep 1
     apt-get -y install git-core ca-certificates rpi-update &&
     echo y | rpi-update &&
@@ -23,7 +24,7 @@ case currentStep in
     ;&
 
   buildAndInstall)
-    echo 'Installing and Configuring dependencies'
+    echo 'Phase 3 of 3: Installing and Configuring dependencies'
     sleep 1
     apt-get -y install subversion libsigc++-2.0-dev g++ make libsigc++-1.2-dev libgsm1-dev libpopt-dev tcl8.5-dev libgcrypt-dev libspeex-dev libasound2-dev alsa-utils cmake &&
     useradd -r -s /sbin/nologin -M svxlink &&
@@ -46,11 +47,11 @@ case currentStep in
     make install &&
     ldconfig &&
     echo 'Done!'
-    sed 's/currentStep=updatePi/currentStep=buildAndInstall/' $0
+    sed 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $0
     ;&
 
-  updatePi)
-    echo 'Already done!'
+  alreadyDone)
+    echo 'Already done!  To start over, modify script.'
     ;&
 
   *)
