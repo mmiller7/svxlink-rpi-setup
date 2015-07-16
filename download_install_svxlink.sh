@@ -1,4 +1,5 @@
 #!/bin/bash
+#https://github.com/mmiller7/svxlink-rpi-setup
 
 #this is the step that will be performed on next execution
 #for clean start, this should be updateRasbian
