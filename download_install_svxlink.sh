@@ -25,7 +25,7 @@ case currentStep in
   buildAndInstall)
     echo 'Installing and Configuring dependencies'
     sleep 1
-    apt-get -y install subversion libsigc++-2.0-dev g++ make libsigc++-1.2-dev libgsm1-dev libpopt-dev tcl8.5-dev libgcrypt-dev libspeex-dev libasound2-dev alsa-utils cmake doxygen &&
+    apt-get -y install subversion libsigc++-2.0-dev g++ make libsigc++-1.2-dev libgsm1-dev libpopt-dev tcl8.5-dev libgcrypt-dev libspeex-dev libasound2-dev alsa-utils cmake &&
     useradd -r -s /sbin/nologin -M svxlink &&
     adduser svxlink audio &&
     
@@ -43,7 +43,6 @@ case currentStep in
     cd build &&
     cmake -DUSE_QT=OFF -DCMAKE_INSTALL_PREFIX=/usr -DSYSCONF_INSTALL_DIR=/etc -DLOCAL_STATE_DIR=/var .. &&
     make &&
-    make doc &&
     make install &&
     ldconfig &&
     echo 'Done!'
