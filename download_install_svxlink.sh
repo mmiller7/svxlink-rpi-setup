@@ -1,8 +1,9 @@
 #!/bin/bash
 
+#this is the step that will be performed on next execution
 currentStep=updateRaspbian
 
-case bar in
+case currentStep in
   updateRaspbian)
     echo 'Updating Raspbian'
     sleep 1
