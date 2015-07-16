@@ -9,6 +9,7 @@ case currentStep in
     sleep 1
     apt-get update &&
     apt-get -y upgrade &&
+    sed 's/currentStep=updateRaspbian/currentStep=updatePi/' $0
     reboot
     ;&
 
@@ -17,6 +18,7 @@ case currentStep in
     sleep 1
     apt-get -y install git-core ca-certificates rpi-update &&
     echo y | rpi-update &&
+    sed 's/currentStep=updatePi/currentStep=buildAndInstall/' $0
     reboot
     ;&
 
@@ -45,6 +47,7 @@ case currentStep in
     make install &&
     ldconfig &&
     echo 'Done!'
+    sed 's/currentStep=updatePi/currentStep=buildAndInstall/' $0
     ;&
 
   updatePi)
