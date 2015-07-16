@@ -4,6 +4,11 @@
 #for clean start, this should be updateRasbian
 currentStep=updateRaspbian
 
+if [ "$(whoami)" != "root" ]; then
+	echo "ERROR: This script be run as root!"
+	exit 1
+fi
+
 case $currentStep in
   updateRaspbian)
     echo 'Phase 1 of 3: Updating Raspbian'
