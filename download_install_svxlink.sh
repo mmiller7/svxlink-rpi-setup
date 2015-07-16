@@ -4,7 +4,7 @@
 #for clean start, this should be updateRasbian
 currentStep=updateRaspbian
 
-case currentStep in
+case $currentStep in
   updateRaspbian)
     echo 'Phase 1 of 3: Updating Raspbian'
     sleep 1
@@ -12,7 +12,7 @@ case currentStep in
     apt-get -y upgrade &&
     sed -i 's/currentStep=updateRaspbian/currentStep=updatePi/' $0
     reboot
-    ;&
+    ;;
 
   updatePi)
     echo 'Phase 2 of 3: Updating Raspberry Pi'
@@ -21,7 +21,7 @@ case currentStep in
     echo y | rpi-update &&
     sed -i 's/currentStep=updatePi/currentStep=buildAndInstall/' $0
     reboot
-    ;&
+    ;;
 
   buildAndInstall)
     echo 'Phase 3 of 3: Installing and Configuring dependencies'
@@ -48,11 +48,11 @@ case currentStep in
     ldconfig &&
     echo 'Done!'
     sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $0
-    ;&
+    ;;
 
   alreadyDone)
     echo 'Already done!  To start over, modify script.'
-    ;&
+    ;;
 
   *)
     echo ERROR
