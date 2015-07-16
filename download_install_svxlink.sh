@@ -46,7 +46,7 @@ case $currentStep in
     make &&
     make install &&
     ldconfig &&
-    echo 'Done!'
+    echo 'Done!' &&
     sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $0
     ;;
 
@@ -58,7 +58,3 @@ case $currentStep in
     echo ERROR
     ;;
 esac
-
-
-
-
