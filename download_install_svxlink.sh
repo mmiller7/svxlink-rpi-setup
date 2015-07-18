@@ -20,7 +20,9 @@ case $currentStep in
     apt-get update &&
     apt-get -y upgrade &&
     sed -i 's/currentStep=updateRaspbian/currentStep=updatePi/' $scriptPath
-    reboot
+    echo 'You *MUST* reboot now.'
+    echo 'Then re-run script to continue with setup phase 2.'
+    #reboot
     ;;
 
   updatePi)
@@ -29,7 +31,9 @@ case $currentStep in
     apt-get -y install git-core ca-certificates rpi-update &&
     echo y | rpi-update &&
     sed -i 's/currentStep=updatePi/currentStep=buildAndInstall/' $scriptPath
-    reboot
+    echo 'You *MUST* reboot now.'
+    echo 'Then re-run script to continue with setup phase 3.'
+    #reboot
     ;;
 
   buildAndInstall)
@@ -51,11 +55,26 @@ case $currentStep in
     cd svxlink-master/src &&
     mkdir build &&
     cd build &&
+    # by this point we should be relative path svxlink-master/src/build
     cmake -DUSE_QT=OFF -DCMAKE_INSTALL_PREFIX=/usr -DSYSCONF_INSTALL_DIR=/etc -DLOCAL_STATE_DIR=/var .. &&
     make &&
     make install &&
     ldconfig &&
+    cd ../.. &&
+    # by this point we should be relative path svxlin-master
+
+    echo 'Copying init-script' &&
+    cp distributions/debian/etc/init.d/svxlink /etc/init.d/svxlink &&
+    chmod 755 /etc/init.d/svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc0.d/K01svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc1.d/K01svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc2.d/S04svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc3.d/S04svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc4.d/S04svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc5.d/S04svxlink &&
+    ln -s /etc/init.d/svxlink /etc/rc6.d/K01svxlink &&
     echo 'Done!' &&
+
     sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $scriptPath
     ;;
 
