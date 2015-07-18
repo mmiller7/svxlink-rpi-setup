@@ -75,6 +75,11 @@ case $currentStep in
     ln -s /etc/init.d/svxlink /etc/rc5.d/S04svxlink &&
     ln -s /etc/init.d/svxlink /etc/rc6.d/K01svxlink &&
     echo 'Done!' &&
+    echo '' &&
+    echo 'Next steps:' &&
+    echo '* Configure /etc/svxlink/svxlink.conf' &&
+    echo '* Create /etc/defaults/svxlink (see svxlink.conf for variables for GPIO startup)' &&
+    echo '* Configure /etc/svxlink/svxlink.d/ModuleEchoLink.conf' &&
 
     sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $scriptPath
     ;;
