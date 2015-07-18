@@ -42,6 +42,7 @@ case $currentStep in
     apt-get -y install subversion libsigc++-2.0-dev g++ make libsigc++-1.2-dev libgsm1-dev libpopt-dev tcl8.5-dev libgcrypt-dev libspeex-dev libasound2-dev alsa-utils cmake &&
     useradd -r -s /sbin/nologin -M svxlink &&
     adduser svxlink audio &&
+    adduser svxlink gpio &&
     
     echo 'Downloading svxlink from GitHub' &&
     sleep 1 &&
