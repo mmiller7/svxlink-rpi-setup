@@ -67,7 +67,7 @@ case $currentStep in
     echo 'Copying init-script' &&
     cp distributions/debian/etc/init.d/svxlink /etc/init.d/svxlink &&
     chmod 755 /etc/init.d/svxlink &&
-    update-rc.d -n svxlink defaults &&
+    update-rc.d svxlink defaults &&
     echo 'Done!' &&
     echo '' &&
     echo 'Next steps:' &&
