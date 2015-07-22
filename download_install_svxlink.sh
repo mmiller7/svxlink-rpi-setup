@@ -63,6 +63,8 @@ case $currentStep in
     ldconfig &&
     cd ../.. &&
     # by this point we should be relative path svxlin-master
+    
+    echo 'Downloading and extracting sound files' &&
     wget 'https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/14.08/svxlink-sounds-en_US-heather-16k-13.12.tar.bz2' &&
     tar -xf svxlink-sounds-en_US-heather-16k-13.12.tar.bz2 &&
     mv en_US-heather-16k /usr/share/svxlink/sounds/ &&
