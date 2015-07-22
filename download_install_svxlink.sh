@@ -63,6 +63,10 @@ case $currentStep in
     ldconfig &&
     cd ../.. &&
     # by this point we should be relative path svxlin-master
+    wget 'https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/14.08/svxlink-sounds-en_US-heather-16k-13.12.tar.bz2' &&
+    tar -xf svxlink-sounds-en_US-heather-16k-13.12.tar.bz2 &&
+    mv en_US-heather-16k /usr/share/svxlink/sounds/ &&
+    ln -s /usr/share/svxlink/sounds/en_US-heather-16k /usr/share/svxlink/sounds/en_US &&
 
     echo 'Copying init-script' &&
     cp distributions/debian/etc/init.d/svxlink /etc/init.d/svxlink &&
