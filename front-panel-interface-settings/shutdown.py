@@ -6,8 +6,8 @@
 
 # Add this line in /etc/rc.local:
 # /root/shutdown.py PIN_NUM &
-# ex.: shutdown.py 13 &
-# where "13" is replaced with your desired GPIO pin number.
+# ex.: shutdown.py 27 &
+# where "27" is replaced with your desired GPIO pin number.
 
 # http://kampis-elektroecke.de/?page_id=3740
 # http://raspi.tv/2013/how-to-use-interrupts-with-python-on-the-raspberry-pi-and-rpi-gpio
