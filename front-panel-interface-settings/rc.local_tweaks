@@ -1,0 +1,31 @@
+#These are some things I added to /etc/rc.local
+#for assorted status LEDs and trigger shutdown button
+
+
+
+#Turn on power LED when booted
+PWR_LED_PIN=17
+echo ${PWR_LED_PIN} > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio${PWR_LED_PIN}/direction
+echo 1 > /sys/class/gpio/gpio${PWR_LED_PIN}/value
+
+
+
+#Blink an LED so we know it hasn't crashed
+BLINK_PIN=18
+BLINK_DELAY=0.5
+echo ${BLINK_PIN} > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio${BLINK_PIN}/direction
+echo "Flashing run indicator on GPIO ${BLINK_PIN}"
+while true
+do
+  echo 1 > /sys/class/gpio/gpio${BLINK_PIN}/value
+  sleep $BLINK_DELAY
+  echo 0 > /sys/class/gpio/gpio${BLINK_PIN}/value
+  sleep $BLINK_DELAY
+done&
+
+
+
+#Monitor shutdown button press
+python /root/shutdown.py 27 &
