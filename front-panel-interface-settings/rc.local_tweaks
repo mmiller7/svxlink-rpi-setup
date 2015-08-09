@@ -3,6 +3,11 @@
 
 
 
+#print network interface status
+ifconfig | egrep "Link|inet" | egrep -v "Loopback|127.0.0.1"
+
+
+
 #Turn on power LED when booted
 PWR_LED_PIN=17
 echo ${PWR_LED_PIN} > /sys/class/gpio/export
