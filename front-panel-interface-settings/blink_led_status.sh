@@ -4,6 +4,15 @@
 # 08AUG2015
 # Polls status and blinks codes.
 
+# The button is to be connected between GROUND and the pin-number
+# specified by the command-line parameter.
+# I recommend putting this script in /root/blink_led_status.sh
+
+# Add this line in /etc/rc.local:
+# /root/blink_led_status.sh PIN_NUM &
+# ex.: /root/blink_led_status.sh 18 &
+# where "18" is replaced with your desired GPIO pin number.
+
 # Blink this GPIO LED to send status
 # Uses 1st parameter by default
 BLINK_PIN=$1
