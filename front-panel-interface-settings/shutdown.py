@@ -5,8 +5,8 @@
 # I recommend putting this script in /root/shutdown.py
 
 # Add this line in /etc/rc.local:
-# /root/shutdown.py PIN_NUM &
-# ex.: shutdown.py 27 &
+# python /root/shutdown.py PIN_NUM &
+# ex.: python /root/shutdown.py 27 &
 # where "27" is replaced with your desired GPIO pin number.
 
 # http://kampis-elektroecke.de/?page_id=3740
