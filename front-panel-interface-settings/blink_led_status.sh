@@ -57,11 +57,9 @@ doTest()
 while true
 do
   # Internet status blink
-  #ping -c 1 -s 0 google.com > /dev/null && blinkOnce $BLINK_DELAY_SHORT || blinkOnce $BLINK_DELAY_LONG
   doTest "ping -c 1 -s 0 google.com"
 
   # Svxlink status blink
-  #pgrep svxlink > /dev/null && blinkOnce $BLINK_DELAY_SHORT || blinkOnce $BLINK_DELAY_LONG
   doTest "pgrep svxlink"
 
   # Wait to restart loop
