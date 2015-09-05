@@ -93,9 +93,14 @@ public class SvxlinkLocationUpdater {
 			System.out.println("       Main Menu");
 			System.out.println("1) Load custom config file");
 			System.out.println("2) Save custom config file");
-			System.out.println("3) Specify custom values");
-			System.out.println("4) Write new system config files");
-			System.out.println("5) Exit");
+			System.out.println();
+			System.out.println("   Specify custom values:");
+			System.out.println("3)    Frequency/Tone");
+			System.out.println("4)    Transmitter Type/Power");
+			System.out.println("5)    Geographic Location");
+			System.out.println();
+			System.out.println("6) Write new system config files");
+			System.out.println("7) Exit");
 			System.out.println();
 			switch(MM.readInt("Choice? "))
 			{
@@ -106,9 +111,15 @@ public class SvxlinkLocationUpdater {
 					locationConfig.writeFile(MM.readString("Filename? "));
 					break;
 				case 3:
-					locationConfig.promptForValues();
+					locationConfig.promptForFrequencyValues();
 					break;
 				case 4:
+					locationConfig.promptForTransmitterValues();
+					break;
+				case 5:
+					locationConfig.promptForLocationValues();
+					break;
+				case 6:
 					System.out.println("Saving svxlink-config");
 					//svxlinkConfig.writeToConsole();
 					svxlinkConfig.writeToFile();
@@ -117,7 +128,7 @@ public class SvxlinkLocationUpdater {
 					moduleEcholinkConfig.writeToFile();
 					tryUpdatePymultimonaprsLatLon(locationConfig.getLatitude(), locationConfig.getLongitude());
 					break;
-				case 5:
+				case 7:
 					keepGoing=false;
 					break;
 				default:
@@ -365,21 +376,26 @@ public class SvxlinkLocationUpdater {
 			
 		}
 
-		public void promptForValues() {
+		public void promptForLocationValues() {
 			setLongitude( MM.readDouble("Longitude (decimal)? "));
 			setLatitude(  MM.readDouble("Latitude  (decimal)? "));
-			setFrequency( MM.readDouble("Frequency?           "));
-			setCtcssTone( MM.readDouble("CTCSS Tone (Hz)?     "));
 			setTxPower(      MM.readInt("TX Power (watts)?    "));
 			setAntennaHeight(MM.readInt("Ant Height (meters)? "));
 			setAprsComment("svxlink on Linux built with http://git.io/vGxwW configuration");
 			setEcholinkLocation(MM.readString("Enter location tag ([Svx] City, ST): "));
 			
 			setEcholinkDescription("QTH:     ", MM.readString("Location Description?     "), "\\n"); //QTH
+		}
+		
+		public void promptForFrequencyValues() {
+			setFrequency( MM.readDouble("Frequency?           "));
+			setCtcssTone( MM.readDouble("CTCSS Tone (Hz)?     "));
+		}
+		
+		public void promptForTransmitterValues() {
 			setEcholinkDescription("Trx:     ", MM.readString("Transmitter make/model?   "), "\\n"); //Trx
 			setEcholinkDescription("Antenna: ", MM.readString("Antenna type/description? "), "\\n"); //Antenna
 			setEcholinkDescription("Pwr Src: ", MM.readString("Power source/description? "), "\\n"); //Pwr Src
-			
 		}
 
 		void printToConsole()
@@ -585,22 +601,30 @@ public class SvxlinkLocationUpdater {
 		
 		private void setEcholinkDescription(String toMatch)
 		{
-			String[] parsedMatch = toMatch.split(":");
-			setEcholinkDescription(parsedMatch[0], ":"+parsedMatch[1], "");
+			//ignore blank line
+			if(!toMatch.trim().isEmpty())
+			{
+				String[] parsedMatch = toMatch.split(":");
+				setEcholinkDescription(parsedMatch[0], ":"+parsedMatch[1], "");
+			}
 		}
 		
 		private void setEcholinkDescription(String prefix, String value, String suffix)
 		{
-			for(int x=0; x < ModuleEcholink_Description.size(); x++)
+			//ignore blank prefix
+			if(!prefix.trim().isEmpty())
 			{
-				if(ModuleEcholink_Description.get(x).getValue().contains(prefix.trim()))
+				for(int x=0; x < ModuleEcholink_Description.size(); x++)
 				{
-					String str=prefix+value+suffix;
-					if(str.charAt(0) != '"')
-						str="\""+str;
-					if(str.charAt(str.length()-1) != '"')
-						str=str+"\"";
-					ModuleEcholink_Description.get(x).setValue(str);
+					if(ModuleEcholink_Description.get(x).getValue().contains(prefix.trim()))
+					{
+						String str=prefix+value+suffix;
+						if(str.charAt(0) != '"')
+							str="\""+str;
+						if(str.charAt(str.length()-1) != '"')
+							str=str+"\"";
+						ModuleEcholink_Description.get(x).setValue(str);
+					}
 				}
 			}
 		}
