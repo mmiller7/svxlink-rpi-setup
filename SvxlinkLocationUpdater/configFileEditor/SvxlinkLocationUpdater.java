@@ -12,16 +12,16 @@ import configFileEditor.INIFile.INIParam;
 
 public class SvxlinkLocationUpdater {
 
-	/*
+	
 	final static String PYMULTIMONAPRS_PATH = "X:\\etc\\pymultimonaprs.json";
 	final static String SVXLINK_CONFIG_DIR = "X:\\etc\\svxlink";
 	final static String _SLASH_ = "\\";
-	*/
 	
+	/*
 	final static String PYMULTIMONAPRS_PATH = "/etc/pymultimonaprs.json";
 	final static String SVXLINK_CONFIG_DIR = "/etc/svxlink";
 	final static String _SLASH_ = "/";
-	
+	*/
 	
 	/**
 	 * @param args
@@ -160,7 +160,51 @@ public class SvxlinkLocationUpdater {
 		if(file.exists() &&
 		   MM.readString("Update pymultimonaprs lat/lon?  [Y/n]").equalsIgnoreCase("Y"))
 		{
-			//TODO
+			ArrayList<String> pymultimonaprs = new ArrayList<String>();
+			//Read in file
+			try
+			{
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				
+				String line;
+			    while ((line = br.readLine()) != null)
+			    {
+			    	if(line.contains("lat"))
+			    	{
+			    		String[] keyVal = line.split(":");
+			    		lat=Math.round(lat*100000.0)/100000.0;
+			    		line=keyVal[0]+": "+lat+",";
+			    	}
+			    	if(line.contains("lng"))
+			    	{
+			    		String[] keyVal = line.split(":");
+			    		lon=Math.round(lon*100000.0)/100000.0;
+			    		line=keyVal[0]+": "+lon+",";
+			    	}
+			    	pymultimonaprs.add(line);
+			    }
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+			
+			//write out file
+			try {
+				FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(fw);
+
+				for(int x=0; x < pymultimonaprs.size(); x++)
+				{
+					//Write field
+					bw.write(pymultimonaprs.get(x));
+					bw.newLine();
+				}
+				bw.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
