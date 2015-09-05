@@ -280,7 +280,7 @@ public class SvxlinkLocationUpdater {
 			int latDeg=Integer.parseInt(latArray[0]);
 			int latMin=Integer.parseInt(latArray[1]);
 			int latSec=Integer.parseInt(latArray[2]);
-			double latDec=lonDeg+(latMin/60.0)+(latSec/60.0/60.0);
+			double latDec=latDeg+(latMin/60.0)+(latSec/60.0/60.0);
 			latitude = (latDirection.equalsIgnoreCase("S")?-1:1) * latDec;
 			if(DEBUG) System.out.println(latitude);
 			
