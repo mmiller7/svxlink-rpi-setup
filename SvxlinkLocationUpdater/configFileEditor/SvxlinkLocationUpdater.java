@@ -89,19 +89,21 @@ public class SvxlinkLocationUpdater {
 			System.out.println();
 			System.out.println();
 			locationConfig.printToConsole();
-			System.out.println("Svxlink Location Updater");
-			System.out.println("       Main Menu");
-			System.out.println("1) Load custom config file");
-			System.out.println("2) Save custom config file");
-			System.out.println();
-			System.out.println("   Specify custom values:");
-			System.out.println("3)    Frequency/Tone");
-			System.out.println("4)    Transmitter Type/Power");
-			System.out.println("5)    Geographic Location");
-			System.out.println();
-			System.out.println("6) Write new system config files");
-			System.out.println("7) Exit");
-			System.out.println();
+			System.out.println("+------------------------------+");
+			System.out.println("|    Svxlink Location Updater  |");
+			System.out.println("|           Main Menu          |");
+			System.out.println("+------------------------------+");
+			System.out.println("| 1) Load custom config file   |");
+			System.out.println("| 2) Save custom config file   |");
+			System.out.println("|                              |");
+			System.out.println("|   Specify custom values:     |");
+			System.out.println("| 3)    Frequency/Tone         |");
+			System.out.println("| 4)    Transmitter Type/Power |");
+			System.out.println("| 5)    Geographic Location    |");
+			System.out.println("|                              |");
+			System.out.println("| 6) Save to system config     |");
+			System.out.println("| 7) Exit (save first!)        |");
+			System.out.println("+------------------------------+");
 			switch(MM.readInt("Choice? "))
 			{
 				case 1:
