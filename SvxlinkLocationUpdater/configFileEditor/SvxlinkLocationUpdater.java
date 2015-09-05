@@ -122,13 +122,24 @@ public class SvxlinkLocationUpdater {
 					locationConfig.promptForLocationValues();
 					break;
 				case 6:
-					System.out.println("Saving svxlink-config");
-					//svxlinkConfig.writeToConsole();
-					svxlinkConfig.writeToFile();
-					System.out.println("Saving module-echolink-config");
-					//moduleEcholinkConfig.writeToConsole();
-					moduleEcholinkConfig.writeToFile();
-					tryUpdatePymultimonaprsLatLon(locationConfig.getLatitude(), locationConfig.getLongitude());
+					File f = new File(svxlinkConfig.getPath());
+					boolean canWrite = f.canWrite();
+					f = new File(moduleEcholinkConfig.getPath());
+					canWrite = canWrite && f.canWrite();
+					if(canWrite)
+					{
+						System.out.println("Saving svxlink-config");
+						//svxlinkConfig.writeToConsole();
+						svxlinkConfig.writeToFile();
+						System.out.println("Saving module-echolink-config");
+						//moduleEcholinkConfig.writeToConsole();
+						moduleEcholinkConfig.writeToFile();
+						tryUpdatePymultimonaprsLatLon(locationConfig.getLatitude(), locationConfig.getLongitude());
+					}
+					else
+					{
+						System.out.println("ERROR: Can't write to file.  Check permissions!");
+					}
 					break;
 				case 7:
 					keepGoing=false;
