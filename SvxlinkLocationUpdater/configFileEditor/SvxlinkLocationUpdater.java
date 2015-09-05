@@ -12,16 +12,16 @@ import configFileEditor.INIFile.INIParam;
 
 public class SvxlinkLocationUpdater {
 
-	
+	/*
 	final static String PYMULTIMONAPRS_PATH = "X:\\etc\\pymultimonaprs.json";
 	final static String SVXLINK_CONFIG_DIR = "X:\\etc\\svxlink";
 	final static String _SLASH_ = "\\";
+	*/
 	
-	/*
 	final static String PYMULTIMONAPRS_PATH = "/etc/pymultimonaprs.json";
 	final static String SVXLINK_CONFIG_DIR = "/etc/svxlink";
 	final static String _SLASH_ = "/";
-	*/
+	
 	
 	/**
 	 * @param args
