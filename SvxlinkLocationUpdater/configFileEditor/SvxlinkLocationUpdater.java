@@ -437,24 +437,45 @@ public class SvxlinkLocationUpdater {
 		}
 
 		public void promptForLocationValues() {
-			setLongitude( MM.readDouble("Longitude (decimal)? "));
-			setLatitude(  MM.readDouble("Latitude  (decimal)? "));
-			setAprsComment("svxlink on Linux built with http://git.io/vGxwW configuration");
+			System.out.println("Old values:");
+			System.out.println("|  Longitude:    "+longitude);
+			System.out.println("|  Latitude:     "+latitude);
+			System.out.println("|  Location Tag: "+getEcholinkLocation());
+			System.out.println("|  Loc. Descrip: "+getEcholinkDescription("QTH:     "));
+			System.out.println("|  Ant Height:   "+antennaHeight+" (meters)");
+			System.out.println("`---------------------------------------------------------------");
+			
+			setLongitude(       MM.readDouble("Longitude (decimal)? "));
+			setLatitude(        MM.readDouble("Latitude  (decimal)? "));
 			setEcholinkLocation(MM.readString("Enter location tag ([Svx] City, ST): "));
-			setEcholinkDescription("QTH:     ", MM.readString("Location Description?     "), "\\n"); //QTH
+			setEcholinkDescription("QTH:     ",
+					            MM.readString("Location Description? "), "\\n"); //QTH
+			setAntennaHeight(      MM.readInt("Ant Height (meters)?  "));
+			setAprsComment("svxlink on Linux built with http://git.io/vGxwW configuration");
 		}
 		
 		public void promptForFrequencyValues() {
-			setFrequency( MM.readDouble("Frequency?           "));
-			setCtcssTone( MM.readDouble("CTCSS Tone (Hz)?     "));
+			System.out.println("Old values:");
+			System.out.println("|  Frequency:  "+frequency);
+			System.out.println("|  CTCSS Tone: "+ctcssTone);
+			System.out.println("`---------------------------------------------------------------");
+			
+			setFrequency( MM.readDouble("Frequency?       "));
+			setCtcssTone( MM.readDouble("CTCSS Tone (Hz)? "));
 		}
 		
 		public void promptForTransmitterValues() {
+			System.out.println("Old values:");
+			System.out.println("|  Transmitter make/model:   "+getEcholinkDescription("Trx:     "));
+			System.out.println("|  Antenna type/description: "+getEcholinkDescription("Antenna: "));
+			System.out.println("|  Power source/description: "+getEcholinkDescription("Pwr Src: "));
+			System.out.println("|  Transmit Power (watts):   "+txPower);
+			System.out.println("`---------------------------------------------------------------");
+			
 			setEcholinkDescription("Trx:     ", MM.readString("Transmitter make/model?   "), "\\n"); //Trx
 			setEcholinkDescription("Antenna: ", MM.readString("Antenna type/description? "), "\\n"); //Antenna
 			setEcholinkDescription("Pwr Src: ", MM.readString("Power source/description? "), "\\n"); //Pwr Src
 			setTxPower(                            MM.readInt("TX Power (watts)?         "));
-			setAntennaHeight(                      MM.readInt("Ant Height (meters)?      "));
 		}
 
 		void printToConsole()
@@ -663,7 +684,7 @@ public class SvxlinkLocationUpdater {
 			//ignore blank line
 			if(!toMatch.trim().isEmpty())
 			{
-				String[] parsedMatch = toMatch.split(":");
+				String[] parsedMatch = toMatch.split(":",2);
 				setEcholinkDescription(parsedMatch[0], ":"+parsedMatch[1], "");
 			}
 		}
