@@ -85,7 +85,6 @@ public class SvxlinkLocationUpdater {
 		while(keepGoing)
 		{
 			System.out.println();
-			System.out.println();
 			System.out.println("+------------------------------+");
 			System.out.println("|    Svxlink Location Updater  |");
 			System.out.println("|           Main Menu          |");
