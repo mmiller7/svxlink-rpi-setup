@@ -102,7 +102,9 @@ public class SvxlinkLocationUpdater {
 			System.out.println("| 7) Save to system config     |");
 			System.out.println("| 8) Exit (save first!)        |");
 			System.out.println("+------------------------------+");
-			switch(MM.readInt("Choice? "))
+			int choice = MM.readInt("Choice? ");
+			System.out.println();
+			switch(choice)
 			{
 				case 1:
 					locationConfig.readFile(MM.readString("Filename? "));
