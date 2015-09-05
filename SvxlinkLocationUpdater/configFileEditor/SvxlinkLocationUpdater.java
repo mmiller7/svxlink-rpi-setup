@@ -439,11 +439,8 @@ public class SvxlinkLocationUpdater {
 		public void promptForLocationValues() {
 			setLongitude( MM.readDouble("Longitude (decimal)? "));
 			setLatitude(  MM.readDouble("Latitude  (decimal)? "));
-			setTxPower(      MM.readInt("TX Power (watts)?    "));
-			setAntennaHeight(MM.readInt("Ant Height (meters)? "));
 			setAprsComment("svxlink on Linux built with http://git.io/vGxwW configuration");
 			setEcholinkLocation(MM.readString("Enter location tag ([Svx] City, ST): "));
-			
 			setEcholinkDescription("QTH:     ", MM.readString("Location Description?     "), "\\n"); //QTH
 		}
 		
@@ -456,6 +453,8 @@ public class SvxlinkLocationUpdater {
 			setEcholinkDescription("Trx:     ", MM.readString("Transmitter make/model?   "), "\\n"); //Trx
 			setEcholinkDescription("Antenna: ", MM.readString("Antenna type/description? "), "\\n"); //Antenna
 			setEcholinkDescription("Pwr Src: ", MM.readString("Power source/description? "), "\\n"); //Pwr Src
+			setTxPower(                            MM.readInt("TX Power (watts)?         "));
+			setAntennaHeight(                      MM.readInt("Ant Height (meters)?      "));
 		}
 
 		void printToConsole()
