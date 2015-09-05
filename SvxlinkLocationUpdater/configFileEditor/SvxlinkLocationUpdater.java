@@ -334,6 +334,7 @@ public class SvxlinkLocationUpdater {
 				{
 					bw.write(str);
 				}
+				bw.newLine();
 				str = getEcholinkDescription("Trx:");
 				if(str != null)
 				{
