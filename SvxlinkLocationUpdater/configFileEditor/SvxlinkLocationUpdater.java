@@ -66,6 +66,7 @@ public class SvxlinkLocationUpdater {
 		 * 					 LOCATION (use [svx] City, ST)
 		 * 					 DESCRIPTION (multi-line)
 		 * 								Describe location\n
+		 *                              QTH:     City, State\n
 		 * 								QRG:     Simplex <FREQ> MHz\n
 		 * 								CTCSS:   100.0 Hz
 		 * 								Trx:     Yaesu FT-7900\n
@@ -134,7 +135,6 @@ public class SvxlinkLocationUpdater {
 		   MM.readString("Update pymultimonaprs lat/lon?  [Y/n]").equalsIgnoreCase("Y"))
 		{
 			//TODO
-			System.err.println("pymultimonaprs lat/lon not yet implemented!");
 		}
 	}
 	
@@ -303,7 +303,12 @@ public class SvxlinkLocationUpdater {
 				bw.write(getEcholinkLocation());
 				bw.newLine();
 				
-				String str = getEcholinkDescription("Trx:");
+				String str = getEcholinkDescription("QTH:");
+				if(str != null)
+				{
+					bw.write(str);
+				}
+				str = getEcholinkDescription("Trx:");
 				if(str != null)
 				{
 					bw.write(str);
@@ -347,6 +352,7 @@ public class SvxlinkLocationUpdater {
 				setAprsComment(br.readLine());
 				setEcholinkLocation(br.readLine());
 				
+				setEcholinkDescription(br.readLine()); //QTH
 				setEcholinkDescription(br.readLine()); //Trx
 				setEcholinkDescription(br.readLine()); //Antenna
 				setEcholinkDescription(br.readLine()); //Pwr Src
@@ -367,8 +373,9 @@ public class SvxlinkLocationUpdater {
 			setTxPower(      MM.readInt("TX Power (watts)?    "));
 			setAntennaHeight(MM.readInt("Ant Height (meters)? "));
 			setAprsComment("svxlink on Linux built with http://git.io/vGxwW configuration");
-			setEcholinkLocation(MM.readString("Enter location tag ([svx] City, ST): "));
+			setEcholinkLocation(MM.readString("Enter location tag ([Svx] City, ST): "));
 			
+			setEcholinkDescription("QTH:     ", MM.readString("Location Description?     "), "\\n"); //QTH
 			setEcholinkDescription("Trx:     ", MM.readString("Transmitter make/model?   "), "\\n"); //Trx
 			setEcholinkDescription("Antenna: ", MM.readString("Antenna type/description? "), "\\n"); //Antenna
 			setEcholinkDescription("Pwr Src: ", MM.readString("Power source/description? "), "\\n"); //Pwr Src
@@ -519,6 +526,11 @@ public class SvxlinkLocationUpdater {
 			setEcholinkDescription("CTCSS:   ", (ctcssTone == 0 ? "None" : String.valueOf(ctcssTone)+" Hz"), "\\n");
 		}
 		
+		void setLocationDescription(String locationDescription)
+		{
+			setEcholinkDescription("QTH:     ", locationDescription, "\\n");
+		}
+		
 		void setRadioModel(String model)
 		{
 			setEcholinkDescription("Trx:     ", model, "\\n");
@@ -556,6 +568,7 @@ public class SvxlinkLocationUpdater {
 		void setEcholinkLocation(String svxCityState)
 		{
 			ModuleEcholink_Location.setValue(svxCityState);
+			setEcholinkDescription("QTH:     ", String.valueOf(svxCityState), "\\n");
 		}
 		
 		private String getEcholinkDescription(String prefix)
