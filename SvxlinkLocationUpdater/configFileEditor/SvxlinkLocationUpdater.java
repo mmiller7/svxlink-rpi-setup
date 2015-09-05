@@ -86,23 +86,21 @@ public class SvxlinkLocationUpdater {
 		{
 			System.out.println();
 			System.out.println();
-			System.out.println();
-			System.out.println();
-			locationConfig.printToConsole();
 			System.out.println("+------------------------------+");
 			System.out.println("|    Svxlink Location Updater  |");
 			System.out.println("|           Main Menu          |");
 			System.out.println("+------------------------------+");
 			System.out.println("| 1) Load custom config file   |");
 			System.out.println("| 2) Save custom config file   |");
+			System.out.println("| 3) Show settings             |");
 			System.out.println("|                              |");
 			System.out.println("|   Specify custom values:     |");
-			System.out.println("| 3)    Frequency/Tone         |");
-			System.out.println("| 4)    Transmitter Type/Power |");
-			System.out.println("| 5)    Geographic Location    |");
+			System.out.println("| 4)    Frequency/Tone         |");
+			System.out.println("| 5)    Transmitter Type/Power |");
+			System.out.println("| 6)    Geographic Location    |");
 			System.out.println("|                              |");
-			System.out.println("| 6) Save to system config     |");
-			System.out.println("| 7) Exit (save first!)        |");
+			System.out.println("| 7) Save to system config     |");
+			System.out.println("| 8) Exit (save first!)        |");
 			System.out.println("+------------------------------+");
 			switch(MM.readInt("Choice? "))
 			{
@@ -113,15 +111,18 @@ public class SvxlinkLocationUpdater {
 					locationConfig.writeFile(MM.readString("Filename? "));
 					break;
 				case 3:
-					locationConfig.promptForFrequencyValues();
+					locationConfig.printToConsole();
 					break;
 				case 4:
-					locationConfig.promptForTransmitterValues();
+					locationConfig.promptForFrequencyValues();
 					break;
 				case 5:
-					locationConfig.promptForLocationValues();
+					locationConfig.promptForTransmitterValues();
 					break;
 				case 6:
+					locationConfig.promptForLocationValues();
+					break;
+				case 7:
 					File f = new File(svxlinkConfig.getPath());
 					boolean canWrite = f.canWrite();
 					f = new File(moduleEcholinkConfig.getPath());
@@ -141,7 +142,7 @@ public class SvxlinkLocationUpdater {
 						System.out.println("ERROR: Can't write to file.  Check permissions!");
 					}
 					break;
-				case 7:
+				case 8:
 					keepGoing=false;
 					break;
 				default:
