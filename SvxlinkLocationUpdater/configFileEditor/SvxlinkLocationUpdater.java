@@ -134,6 +134,7 @@ public class SvxlinkLocationUpdater {
 		   MM.readString("Update pymultimonaprs lat/lon?  [Y/n]").equalsIgnoreCase("Y"))
 		{
 			//TODO
+			System.err.println("pymultimonaprs lat/lon not yet implemented!");
 		}
 	}
 	
