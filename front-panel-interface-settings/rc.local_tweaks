@@ -3,11 +3,6 @@
 
 
 
-#print network interface status
-ifconfig | egrep "Link|inet" | egrep -v "Loopback|127.0.0.1"
-
-
-
 #Turn on power LED when booted
 PWR_LED_PIN=17
 echo ${PWR_LED_PIN} > /sys/class/gpio/export
@@ -22,4 +17,31 @@ echo 1 > /sys/class/gpio/gpio${PWR_LED_PIN}/value
 
 
 #Monitor shutdown button press
-python /root/shutdown.py 27 &
+#python /root/shutdown.py 27 &
+python /root/buttonAction.py 27 "shutdown -h now" &
+
+
+
+# Monitor service restart button press
+#python /root/restartServices.py 4 &
+python /root/buttonAction.py 4 "echo \"Reinitializing services...\" | wall;\
+ service networking stop; service networking start;\
+ ([ -e /etc/rc5.d/*svxlink ] && service svxlink restart);\
+ ([ -e /etc/rc5.d/*pymultimonaprs ] && service pymultimonaprs restart);" 8000 &
+
+
+
+# Simple check to ensure services came up and try once more if they failed.
+[ -e /etc/rc5.d/*svxlink ] && (
+  service svxlink status > /dev/null && echo "SvxLink running OK" || (echo "SvxLink failed start, trying again."; service svxlink restart)
+) || (echo "SvxLink disabled")
+
+[ -e /etc/rc5.d/*pymultimonaprs ] && (
+  service pymultimonaprs status > /dev/null && echo "APRS iGate running OK" || (echo "APRS iGate failed start, trying again."; service pymultimonaprs restart)
+) || (echo "pymultimonaprs disabled")
+
+
+
+
+#print network interface status
+ifconfig | egrep "Link|inet" | egrep -v "Loopback|127.0.0.1"
