@@ -1,10 +1,6 @@
 #!/bin/bash
 #https://github.com/mmiller7/svxlink-rpi-setup
 
-#this is the step that will be performed on next execution
-#for clean start, this should be updateRasbian
-currentStep=updateRaspbian
-
 set -e
 
 if [ "$(whoami)" != "root" ]; then
@@ -15,31 +11,7 @@ fi
 #get path to script for sed later
 scriptPath="`pwd`/`basename $0`"
 
-case $currentStep in
-  updateRaspbian)
-    echo 'Phase 1 of 3: Updating Raspbian'
-    sleep 1
-    apt-get update
-    apt-get -y upgrade
-    sed -i 's/currentStep=updateRaspbian/currentStep=updatePi/' $scriptPath
-    echo 'You *MUST* reboot now.'
-    echo 'Then re-run script to continue with setup phase 2.'
-    #reboot
-    ;;
-
-  updatePi)
-    echo 'Phase 2 of 3: Updating Raspberry Pi'
-    sleep 1
-    apt-get -y install git-core ca-certificates rpi-update
-    echo y | rpi-update
-    sed -i 's/currentStep=updatePi/currentStep=buildAndInstall/' $scriptPath
-    echo 'You *MUST* reboot now.'
-    echo 'Then re-run script to continue with setup phase 3.'
-    #reboot
-    ;;
-
-  buildAndInstall)
-    echo 'Phase 3 of 3: Installing and Configuring dependencies'
+    echo 'Installing and Configuring dependencies'
     sleep 1
     apt-get -y install subversion libsigc++-2.0-dev g++ make libsigc++-1.2-dev libgsm1-dev libpopt-dev tcl8.5-dev libgcrypt-dev libspeex-dev libasound2-dev alsa-utils cmake default-jdk default-jre
     useradd -r -s /sbin/nologin -M svxlink
@@ -66,13 +38,21 @@ case $currentStep in
     # by this point we should be relative path svxlink-master/src/build
     cmake -DUSE_QT=OFF -DCMAKE_INSTALL_PREFIX=/usr -DSYSCONF_INSTALL_DIR=/etc -DLOCAL_STATE_DIR=/var ..
     make
-    make install
+    version=`date '+%Y%m%d'`
+    echo "Attempting to build package svxlink version $version"
+    checkinstall -D --pkgname svxlink --pkggroup svxlink --provides svxlink --pkgversion $version -y && (
+	echo "Installing newly built package"
+	dpkg -i svxlink_*.deb
+    ) || (
+	echo "Failed to build package for install, falling back to basic make-install"
+	make install
+    )
     ldconfig
     cd ../..
     # by this point we should be relative path svxlin-master
     
     echo 'Downloading and extracting sound files'
-    wget 'https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/14.08/svxlink-sounds-en_US-heather-16k-13.12.tar.bz2'
+    wget 'https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/18.03.1/svxlink-sounds-en_US-heather-16k-18.03.1.tar.bz2'
     tar -xf svxlink-sounds-en_US-heather-16k-13.12.tar.bz2
     mv en_US-heather-16k /usr/share/svxlink/sounds/
     ln -s /usr/share/svxlink/sounds/en_US-heather-16k /usr/share/svxlink/sounds/en_US
@@ -88,14 +68,5 @@ case $currentStep in
     echo '* Create /etc/defaults/svxlink (see svxlink.conf for variables for GPIO startup)'
     echo '* Configure /etc/svxlink/svxlink.d/ModuleEchoLink.conf'
 
-    sed -i 's/currentStep=buildAndInstall/currentStep=alreadyDone/' $scriptPath
-    ;;
+    sed -i 's/currentStep=alreadyDone/currentStep=alreadyDone/' $scriptPath
 
-  alreadyDone)
-    echo 'Already done!  To start over, modify script.'
-    ;;
-
-  *)
-    echo ERROR
-    ;;
-esac
